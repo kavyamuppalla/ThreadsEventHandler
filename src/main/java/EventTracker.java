@@ -10,19 +10,45 @@ public class EventTracker implements Tracker {
     private EventTracker() {
         this.tracker = new HashMap<>();
     }
+    @Override
+    public Map<String, Integer> tracker() {
+        return tracker;
+    }
 
     synchronized public static EventTracker getInstance() {
-        return null;
+        return INSTANCE;
     }
 
     synchronized public void push(String message) {
+        Integer count = tracker.get(message);
+        if (count == null) {
+            tracker.put(message, 1);
+        }
+        else {
+            tracker.put(message, count + 1);
+        }
+
+
     }
 
     synchronized public Boolean has(String message) {
-        return null;
+        Integer count = tracker.get(message);
+        if(tracker.containsKey(message) && count >  0) {
+            return true;
+        }
+        return false;
     }
 
     synchronized public void handle(String message, EventHandler e) {
+        e.handle();
+        Integer count = tracker.get(message);
+        if (count == null) {
+            tracker.put(message, 1);
+        }
+        else {
+            tracker.put(message, count - 1);
+        }
+
     }
 
     // Do not use this. This constructor is for tests only

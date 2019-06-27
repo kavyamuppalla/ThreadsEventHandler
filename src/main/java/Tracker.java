@@ -6,5 +6,7 @@ public interface Tracker {
 
     Boolean has(String message);
 
+    public Map<String, Integer> tracker();
+
     void handle(String message, EventHandler e);
 }
